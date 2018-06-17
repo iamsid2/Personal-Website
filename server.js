@@ -7,8 +7,15 @@ var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var errorHandler = require('errorhandler');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/contactme');
 var app = express();
+
+//mongodb connection
+mongoose.connect('mongodb://localhost/con');
+var db = mongoose.connection;
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+var success = require('./routes/success');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,43 +27,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var conSchema = mongoose.Schema({
-name:{type:String, required : true},
-email:{type:String, required : true},
-mobile:{type:String, required : true},
-cmnts:{type:String, required : true}
-});
-var Layout = mongoose.model("Layout", conSchema);
-app.get('/', function(req, res){
-   res.render('layout');
-});
+app.use('/', index);
+app.use('/users', users);
+app.use('/success', success)
 
-app.post('/', function(req, res){
-   var personInfo = req.body; //Get the parsed information
-   
-  if(!personInfo.name || !personInfo.email || !personInfo.mobile || !personInfo.cmnts){
-      res.send("Sorry, you provided worng info");
-   } else{
-      var newPerson = new Person({
-         name: personInfo.name,
-         email: personInfo.email,
-         mobile: personInfo.mobile,
-         cmnts: personInfo.cmnts
-      });
-    
-      newPerson.save(function(err, Layout){
-            if(err) res.json(err);
-         else
-            res.send("Success I will get back to you");
-   });
-    
-  };
-});
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -71,4 +52,3 @@ app.use(function(err, req, res, next) {
 
 app.listen(1110);
 console.log("Listening to port 1110");
-module.exports = app;

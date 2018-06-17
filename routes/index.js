@@ -7,4 +7,5 @@ router.get('/layout', function(req,res){
   res.render('layout');
 });
 router.post('/layout', contcMe.conUser );
+
 module.exports = router;

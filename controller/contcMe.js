@@ -7,7 +7,7 @@ var conUser = function(req,res){
     email : req.body.email,
     message : req.body.message
   });
-  
+
 donmodel.save(function(err,doc){
     if(err) res.json(err);
     else {
@@ -18,4 +18,3 @@ donmodel.save(function(err,doc){
 
 
 module.exports = {"conUser" : conUser };
-	
