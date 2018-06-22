@@ -3,10 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-  "start": "node server.js",
-  },
-  "engines": {
-    "node": "9.4.0"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
